@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <todo todo_id="todo-001" todo_title="todo 001" created_at="2017-10-05" finished="false" />
+    <todo todo_id="todo-002" todo_title="todo 002" created_at="2017-10-05" finished="false" />
+    <todo todo_id="todo-003" todo_title="todo 003" created_at="2017-10-05" finished="true" />
+</dataset>

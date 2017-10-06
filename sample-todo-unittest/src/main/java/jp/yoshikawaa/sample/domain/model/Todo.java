@@ -14,6 +14,16 @@ public class Todo implements Serializable {
     private boolean finished;
 
     private Date createdAt;
+    
+    public Todo() {
+    }
+    
+    public Todo(String todoId, String todoTitle, Date createdAt, boolean finished) {
+        this.todoId = todoId;
+        this.todoTitle = todoTitle;
+        this.createdAt = createdAt;
+        this.finished = finished;
+    }
 
     public String getTodoId() {
         return todoId;
