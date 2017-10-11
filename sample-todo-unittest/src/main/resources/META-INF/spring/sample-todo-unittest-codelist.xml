@@ -10,17 +10,24 @@
         <property name="fetchSize" value="${codelist.jdbc.fetchSize:1000}" />
     </bean>
 
-    <bean id="AbstractJdbcCodeList"
-          class="org.terasoluna.gfw.common.codelist.JdbcCodeList" abstract="true">
+    <bean id="AbstractJdbcCodeList" class="org.terasoluna.gfw.common.codelist.JdbcCodeList"
+        abstract="true">
         <property name="jdbcTemplate" ref="jdbcTemplateForCodeList" />
     </bean>
 
-    <!-- Example for usage of AbstractJdbcCodeList
-    <bean id="CL_SAMPLE" parent="AbstractJdbcCodeList">
-        <property name="querySql" value="SELECT code, code_name FROM t_sample_codes ORDER BY code" />
-        <property name="valueColumn" value="code" />
-        <property name="labelColumn" value="code_name" />
+    <!-- Example for usage of AbstractJdbcCodeList <bean id="CL_SAMPLE" parent="AbstractJdbcCodeList"> 
+        <property name="querySql" value="SELECT code, code_name FROM t_sample_codes 
+        ORDER BY code" /> <property name="valueColumn" value="code" /> <property 
+        name="labelColumn" value="code_name" /> </bean> -->
+
+    <bean id="CL_ORDERSTATUS" class="org.terasoluna.gfw.common.codelist.SimpleMapCodeList"> <!-- (1) -->
+        <property name="map">
+            <map>
+                <entry key="1" value="Received" /> <!-- (2) -->
+                <entry key="2" value="Sent" />
+                <entry key="3" value="Cancelled" />
+            </map>
+        </property>
     </bean>
-    -->
 
 </beans>
