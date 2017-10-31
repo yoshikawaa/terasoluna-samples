@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+    ">
+
+    <import resource="classpath:/META-INF/spring/sample-todo-doma-env.xml" />
+
+    <bean id="domaConfig" class="jp.yoshikawaa.gfw.doma.jdbc.DefaultDomaConfig">
+        <property name="dataSource" ref="dataSource" />
+        <property name="dialect" ref="dialect" />
+        <property name="sqlFileRepository" ref="sqlFileRepository" />
+    </bean>
+
+    <bean id="dialect" class="org.seasar.doma.jdbc.dialect.H2Dialect" />
+
+    <bean id="sqlFileRepository" class="org.seasar.doma.jdbc.GreedyCacheSqlFileRepository" />
+
+</beans>
