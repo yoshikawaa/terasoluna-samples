@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
 import jp.yoshikawaa.sample.app.todo.TodoForm.TodoCreate;
 import jp.yoshikawaa.sample.app.todo.TodoForm.TodoDelete;
@@ -48,6 +50,7 @@ public class TodoController {
     }
 
     @RequestMapping(value = "list")
+    @TransactionTokenCheck(namespace = "todo", type = TransactionTokenType.BEGIN)
     public String list(Model model) {
         Collection<Todo> todos = todoService.findAll();
         model.addAttribute("todos", todos);
@@ -55,6 +58,7 @@ public class TodoController {
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
+    @TransactionTokenCheck(namespace = "todo", type = TransactionTokenType.IN)
     public String create(@Validated({ Default.class, TodoCreate.class }) TodoForm todoForm, BindingResult bindingResult,
             Model model, RedirectAttributes attributes) {
 
@@ -76,6 +80,7 @@ public class TodoController {
     }
 
     @RequestMapping(value = "finish", method = RequestMethod.POST)
+    @TransactionTokenCheck(namespace = "todo", type = TransactionTokenType.IN)
     public String finish(@Validated({ Default.class, TodoFinish.class }) TodoForm form, BindingResult bindingResult,
             Model model, RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {
@@ -94,6 +99,7 @@ public class TodoController {
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @TransactionTokenCheck(namespace = "todo", type = TransactionTokenType.IN)
     public String delete(@Validated({ Default.class, TodoDelete.class }) TodoForm form, BindingResult bindingResult,
             Model model, RedirectAttributes attributes) {
 

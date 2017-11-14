@@ -1,7 +1,7 @@
 package jp.yoshikawaa.sample.app.todo;
 
-import static jp.yoshikawaa.sample.test.util.TestUtils.buildCsrfToken;
 import static jp.yoshikawaa.sample.test.util.TestUtils.resultMessage;
+import static jp.yoshikawaa.sample.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasToString;
 import static org.mockito.Matchers.any;
@@ -11,6 +11,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,8 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -66,7 +65,6 @@ import jp.yoshikawaa.sample.test.support.MockitoRuleSupport;
 public class TodoControllerWebApplicationTest extends MockitoRuleSupport {
 
     private MockMvc mvc;
-    private MockHttpSession session;
 
     @Inject
     private WebApplicationContext context;
@@ -83,9 +81,6 @@ public class TodoControllerWebApplicationTest extends MockitoRuleSupport {
                 .addFilters(new MDCClearFilter(), new DelegatingFilterProxy("exceptionLoggingFilter", context),
                         new XTrackMDCPutFilter(), new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity()).alwaysDo(log()).build();
-
-        // setup mock session
-        session = new MockHttpSession(context.getServletContext());
     }
 
     @Test
@@ -273,33 +268,27 @@ public class TodoControllerWebApplicationTest extends MockitoRuleSupport {
     }
 
     private RequestBuilder create(String todoTitle) throws Exception {
-        CsrfToken token = buildCsrfToken(mvc, session);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("todoTitle", todoTitle);
-        params.add(token.getParameterName(), token.getToken());
 
-        return post("/todo/create").session(session).params(params);
+        return post("/todo/create").with(csrf()).with(transaction("todo")).params(params);
     }
 
     private RequestBuilder finish(String todoId) throws Exception {
-        CsrfToken token = buildCsrfToken(mvc, session);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("todoId", todoId);
-        params.add(token.getParameterName(), token.getToken());
 
-        return post("/todo/finish").session(session).params(params);
+        return post("/todo/finish").with(csrf()).with(transaction("todo")).params(params);
     }
 
     private RequestBuilder delete(String todoId) throws Exception {
-        CsrfToken token = buildCsrfToken(mvc, session);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("todoId", todoId);
-        params.add(token.getParameterName(), token.getToken());
 
-        return post("/todo/delete").session(session).params(params);
+        return post("/todo/delete").with(csrf()).with(transaction("todo")).params(params);
     }
 
 }
