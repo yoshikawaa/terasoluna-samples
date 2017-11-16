@@ -2,6 +2,7 @@ package jp.yoshikawaa.sample.app.todo;
 
 import static jp.yoshikawaa.sample.test.util.TestUtils.resultMessage;
 import static jp.yoshikawaa.sample.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
+import static jp.yoshikawaa.sample.test.web.servlet.result.TerasolunaGfwMockMvcResultMatchers.resultMessages;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasToString;
 import static org.mockito.Matchers.any;
@@ -104,8 +105,8 @@ public class TodoControllerWebApplicationTest extends MockitoRuleSupport {
         // execute and assert
         mvc.perform(create(todoTitle)).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/todo/list"))
                 .andExpect(model().errorCount(0))
-                .andExpect(flash().attribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME,
-                        hasToString(resultMessage(StandardResultMessageType.SUCCESS, "Created successfully!"))));
+                .andExpect(resultMessages().type(StandardResultMessageType.SUCCESS))
+                .andExpect(resultMessages().textExists("Created successfully!"));
 
         verify(todoService).create(argThat(new ArgumentMatcher<Todo>() {
             @Override

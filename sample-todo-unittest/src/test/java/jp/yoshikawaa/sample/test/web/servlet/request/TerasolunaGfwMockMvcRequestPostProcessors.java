@@ -21,7 +21,7 @@ import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenStore;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
-public class TerasolunaGfwMockMvcRequestPostProcessors {
+public final class TerasolunaGfwMockMvcRequestPostProcessors {
 
     public static TransactionTokenRequestPostProcessor transaction() {
         return new TransactionTokenRequestPostProcessor();
@@ -233,6 +233,9 @@ public class TerasolunaGfwMockMvcRequestPostProcessors {
                 }
             }
         }
+    }
+    
+    private TerasolunaGfwMockMvcRequestPostProcessors() {
     }
 
 }
