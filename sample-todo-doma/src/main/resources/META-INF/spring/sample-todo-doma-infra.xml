@@ -8,7 +8,7 @@
 
     <import resource="classpath:/META-INF/spring/sample-todo-doma-env.xml" />
 
-    <bean id="domaConfig" class="jp.yoshikawaa.gfw.doma.jdbc.DefaultDomaConfig">
+    <bean id="domaConfig" class="io.github.yoshikawaa.doma.jdbc.DefaultDomaConfig">
         <property name="dataSource" ref="dataSource" />
         <property name="dialect" ref="dialect" />
         <property name="sqlFileRepository" ref="sqlFileRepository" />

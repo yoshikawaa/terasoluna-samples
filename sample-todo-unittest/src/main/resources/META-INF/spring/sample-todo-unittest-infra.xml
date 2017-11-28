@@ -16,6 +16,6 @@
     </bean>
 
     <!-- scan for Mappers -->
-    <mybatis:scan base-package="jp.yoshikawaa.sample.domain.repository" />
+    <mybatis:scan base-package="io.github.yoshikawaa.sample.domain.repository" />
 
 </beans>

@@ -16,7 +16,7 @@
     <import resource="classpath:META-INF/spring/sample-todo-unittest-infra.xml" />
     <import resource="classpath*:META-INF/spring/**/*-codelist.xml" />
     
-    <context:component-scan base-package="jp.yoshikawaa.sample.domain" />
+    <context:component-scan base-package="io.github.yoshikawaa.sample.domain" />
 
     <!-- AOP. -->
     <bean id="resultMessagesLoggingInterceptor"

@@ -32,7 +32,7 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="jp.yoshikawaa.sample">
+    <logger name="io.github.yoshikawaa.sample">
         <level value="debug" />
     </logger>
 
@@ -64,7 +64,7 @@
         <level value="debug" />
     </logger>
 
-    <logger name="jp.yoshikawaa.gfw.doma.jdbc">
+    <logger name="io.github.yoshikawaa.doma.jdbc">
         <level value="debug" />
     </logger>
     

@@ -17,16 +17,16 @@
     </settings>
 
     <typeAliases>
-        <package name="jp.yoshikawaa.sample.domain.model" />
-        <package name="jp.yoshikawaa.sample.domain.repository" />
+        <package name="io.github.yoshikawaa.sample.domain.model" />
+        <package name="io.github.yoshikawaa.sample.domain.repository" />
 <!--
-        <package name="jp.yoshikawaa.sample.infra.mybatis.typehandler" />
+        <package name="io.github.yoshikawaa.sample.infra.mybatis.typehandler" />
 -->
     </typeAliases>
 
     <typeHandlers>
 <!--
-        <package name="jp.yoshikawaa.sample.infra.mybatis.typehandler" />
+        <package name="io.github.yoshikawaa.sample.infra.mybatis.typehandler" />
 -->
     </typeHandlers>
 

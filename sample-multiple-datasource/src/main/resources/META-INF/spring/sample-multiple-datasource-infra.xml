@@ -17,8 +17,8 @@
     </bean>
 
     <!-- scan for Mappers -->
-    <mybatis:scan base-package="jp.yoshikawaa.sample.domain.repository"
-        annotation="jp.yoshikawaa.sample.domain.repository.annotation.DataSource"
+    <mybatis:scan base-package="io.github.yoshikawaa.sample.domain.repository"
+        annotation="io.github.yoshikawaa.sample.domain.repository.annotation.DataSource"
         factory-ref="sqlSessionFactory" />
 
     <!-- additional sql-settion-factory -->
@@ -30,8 +30,8 @@
     </bean>
 
     <!-- scan for Mappers -->
-    <mybatis:scan base-package="jp.yoshikawaa.sample.domain.repository"
-        annotation="jp.yoshikawaa.sample.domain.repository.annotation.DataSource2"
+    <mybatis:scan base-package="io.github.yoshikawaa.sample.domain.repository"
+        annotation="io.github.yoshikawaa.sample.domain.repository.annotation.DataSource2"
         factory-ref="sqlSessionFactory2" />
 
 </beans>
