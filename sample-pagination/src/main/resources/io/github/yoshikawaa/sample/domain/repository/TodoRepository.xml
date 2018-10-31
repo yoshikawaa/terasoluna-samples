@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.yoshikawaa.sample.domain.repository.TodoRepository">
+
+    <select id="findAllByCondition" parameterType="TodoFindCondition" resultType="Todo">
+    	<include refid="fragmentFind" />
+    	<include refid="fragmentFindCondition" />
+      	<if test="pageable != null">
+            LIMIT #{pageable.pageSize}
+            OFFSET #{pageable.offset}	
+       	</if>
+    </select>
+    
+    <select id="countByCondition" parameterType="TodoFindCondition" resultType="Long">
+    	<include refid="fragmentCount" />
+    	<include refid="fragmentFindCondition" />
+    </select>
+
+    <select id="findOne" parameterType="String" resultType="Todo">
+    	<include refid="fragmentFind" />
+        WHERE
+            todo_id = #{todoId}
+    </select>
+
+    <insert id="create" parameterType="Todo">
+        INSERT INTO todo
+        (
+            todo_id,
+            todo_title,
+            finished,
+            created_at
+        )
+        VALUES
+        (
+            #{todoId},
+            #{todoTitle},
+            #{finished},
+            #{createdAt}
+        )
+    </insert>
+
+    <update id="update" parameterType="Todo">
+        UPDATE todo
+        SET
+            todo_title = #{todoTitle},
+            finished = #{finished},
+            created_at = #{createdAt}
+        WHERE
+            todo_id = #{todoId}
+    </update>
+
+    <delete id="delete" parameterType="Todo">
+        DELETE FROM
+            todo
+        WHERE
+            todo_id = #{todoId}
+    </delete>
+
+	<sql id="fragmentFind">
+        SELECT
+            todo_id,
+            todo_title,
+            finished,
+            created_at
+        FROM
+            todo
+	</sql>
+	
+	<sql id="fragmentCount">
+        SELECT
+            COUNT(*)
+        FROM
+            todo
+	</sql>
+	
+	<sql id="fragmentFindCondition">
+    	<bind name="escapedTitle"
+        	value="@org.terasoluna.gfw.common.query.QueryEscapeUtils@toContainingCondition(condition.todoTitle)" />
+        <where>
+        	<if test="condition.todoTitle != null and condition.todoTitle.length != 0">
+        		AND todo_title LIKE #{escapedTitle} ESCAPE '~'
+        	</if>
+        	<if test="condition.finished != null">
+        		AND finished = #{condition.finished}
+        	</if>
+        	<if test="condition.createdAt != null">
+        		AND created_at <![CDATA[ >= ]]> #{condition.createdAt}
+        	</if>
+        </where>
+	</sql>
+
+</mapper>
