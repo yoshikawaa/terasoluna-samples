@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    ">
+    
+    <bean id="dateFactory" class="io.github.yoshikawaa.sample.validation.FixedJodaTimeDateFactory">
+        <property name="pattern" value="2010-06-30T01:20" />
+    </bean>
+    <bean id="validator" class="io.github.yoshikawaa.sample.validation.LocalHibernateValidatorFactoryBean">
+        <property name="timeProvider">
+            <bean class="io.github.yoshikawaa.sample.validation.DateFactoryTimeProvider">
+                <property name="dateFactory" ref="dateFactory" />
+            </bean>
+        </property>
+    </bean>
+
+</beans>

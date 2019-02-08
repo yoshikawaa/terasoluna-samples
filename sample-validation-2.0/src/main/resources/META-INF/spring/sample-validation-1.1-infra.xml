@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    ">
+    
+    <bean id="dateFactory" class="io.github.yoshikawaa.sample.validation.FixedJSR310DateFactory">
+        <property name="instantPattern" value="2010-06-30T01:20:00Z" />
+    </bean>
+    <bean id="validator" class="io.github.yoshikawaa.sample.validation.LocalHibernateValidatorFactoryBean">
+        <property name="clockProvider">
+            <bean class="io.github.yoshikawaa.sample.validation.DateFactoryClockProvider">
+                <property name="dateFactory" ref="dateFactory" />
+            </bean>
+        </property>
+    </bean>
+
+</beans>
