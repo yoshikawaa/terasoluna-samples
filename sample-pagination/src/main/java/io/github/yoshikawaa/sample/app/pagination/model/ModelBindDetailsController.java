@@ -1,10 +1,5 @@
 package io.github.yoshikawaa.sample.app.pagination.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Map;
-
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.terasoluna.gfw.web.el.Functions;
 
 import io.github.yoshikawaa.sample.app.pagination.FindForm;
 import io.github.yoshikawaa.sample.app.pagination.PageInfo;
@@ -22,11 +17,6 @@ import io.github.yoshikawaa.sample.domain.service.TodoService;
 @Controller
 @RequestMapping("/pagination/model/{todoId}")
 public class ModelBindDetailsController {
-
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    
-    @Autowired
-    private Mapper mapper;
 
     @Autowired
     private TodoService todoService;
@@ -39,28 +29,20 @@ public class ModelBindDetailsController {
     }
 
     @PostMapping(params = "finish")
-    @SuppressWarnings("unchecked")
     public String finish(@PathVariable("todoId") String todoId, FindForm form, BindingResult ignoreResult,
-            PageInfo pageInfo, BindingResult ignoreResult2, RedirectAttributes redirectAttributes) {
+            PageInfo pageInfo, BindingResult ignoreResult2) {
 
         todoService.finish(todoId);
 
-        redirectAttributes.mergeAttributes(mapper.map(form, Map.class));
-        redirectAttributes.addAttribute("createdAt", DATE_FORMAT.format(form.getCreatedAt()));
-        redirectAttributes.mergeAttributes(mapper.map(pageInfo, Map.class));
-        return "redirect:/pagination/model/{todoId}";
+        return "redirect:/pagination/model/{todoId}?" + String.join("&", Functions.query(pageInfo), Functions.query(form));
     }
 
     @PostMapping(params = "delete")
-    @SuppressWarnings("unchecked")
     public String delete(@PathVariable("todoId") String todoId, FindForm form, BindingResult ignoreResult,
-            PageInfo pageInfo, RedirectAttributes redirectAttributes) {
+            PageInfo pageInfo) {
 
         todoService.delete(todoId);
 
-        redirectAttributes.mergeAttributes(mapper.map(form, Map.class));
-        redirectAttributes.addAttribute("createdAt", DATE_FORMAT.format(form.getCreatedAt()));
-        redirectAttributes.mergeAttributes(mapper.map(pageInfo, Map.class));
-        return "redirect:/pagination/model";
+        return "redirect:/pagination/model?" + String.join("&", Functions.query(pageInfo), Functions.query(form));
     }
 }

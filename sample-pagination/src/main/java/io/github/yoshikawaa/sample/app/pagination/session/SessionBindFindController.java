@@ -1,7 +1,5 @@
 package io.github.yoshikawaa.sample.app.pagination.session;
 
-import java.util.Map;
-
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.terasoluna.gfw.web.el.Functions;
 
 import io.github.yoshikawaa.sample.app.pagination.FindForm;
 import io.github.yoshikawaa.sample.app.pagination.PageInfo;
@@ -49,14 +47,11 @@ public class SessionBindFindController {
     }
 
     @GetMapping(params = "restore")
-    @SuppressWarnings("unchecked")
     public String restore(SessionStatus sessionStatus, @SessionAttribute("condition") TodoFindCondition condition,
-            @SessionAttribute("pageInfo") PageInfo pageInfo, RedirectAttributes redirectAttributes) {
+            @SessionAttribute("pageInfo") PageInfo pageInfo) {
 
         sessionStatus.isComplete();
 
-        redirectAttributes.mergeAttributes(mapper.map(condition, Map.class));
-        redirectAttributes.mergeAttributes(mapper.map(pageInfo, Map.class));
-        return "redirect:/pagination/session";
+        return "redirect:/pagination/session?" + String.join("&", Functions.query(pageInfo), Functions.query(condition));
     }
 }

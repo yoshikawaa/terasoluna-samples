@@ -1,8 +1,5 @@
 package io.github.yoshikawaa.sample.app.pagination.param;
 
-import java.util.Map;
-
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,19 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.terasoluna.gfw.web.el.Functions;
 
 import io.github.yoshikawaa.sample.app.pagination.FindForm;
 import io.github.yoshikawaa.sample.app.pagination.PageInfo;
-import io.github.yoshikawaa.sample.domain.repository.TodoFindCondition;
 import io.github.yoshikawaa.sample.domain.service.TodoService;
 
 @Controller
 @RequestMapping("/pagination/param/{todoId}")
 public class ParamBindDetailsController {
-
-    @Autowired
-    private Mapper mapper;
 
     @Autowired
     private TodoService todoService;
@@ -35,26 +28,20 @@ public class ParamBindDetailsController {
     }
 
     @PostMapping(params = "finish")
-    @SuppressWarnings("unchecked")
     public String finish(@PathVariable("todoId") String todoId, FindForm form, BindingResult ignoreResult,
-            PageInfo pageInfo, BindingResult ignoreResult2, RedirectAttributes redirectAttributes) {
+            PageInfo pageInfo, BindingResult ignoreResult2) {
 
         todoService.finish(todoId);
 
-        redirectAttributes.mergeAttributes(mapper.map(mapper.map(form, TodoFindCondition.class), Map.class));
-        redirectAttributes.mergeAttributes(mapper.map(pageInfo, Map.class));
-        return "redirect:/pagination/param/{todoId}";
+        return "redirect:/pagination/param/{todoId}?" + String.join("&", Functions.query(pageInfo), Functions.query(form));
     }
 
     @PostMapping(params = "delete")
-    @SuppressWarnings("unchecked")
     public String delete(@PathVariable("todoId") String todoId, FindForm form, BindingResult ignoreResult,
-            PageInfo pageInfo, BindingResult ignoreResult2, RedirectAttributes redirectAttributes) {
+            PageInfo pageInfo, BindingResult ignoreResult2) {
 
         todoService.delete(todoId);
 
-        redirectAttributes.mergeAttributes(mapper.map(mapper.map(form, TodoFindCondition.class), Map.class));
-        redirectAttributes.mergeAttributes(mapper.map(pageInfo, Map.class));
-        return "redirect:/pagination/param";
+        return "redirect:/pagination/param?" + String.join("&", Functions.query(pageInfo), Functions.query(form));
     }
 }
