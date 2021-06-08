@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/task https://www.springframework.org/schema/task/spring-task.xsd
+    ">
+
+    <!-- Example for usage of SimpleMapCodeList
+    <bean id="CL_SAMPLE" class="org.terasoluna.gfw.common.codelist.SimpleMapCodeList">
+        <property name="map">
+            <util:map>
+                <entry key="1" value="Received" />
+                <entry key="2" value="Sent" />
+                <entry key="3" value="Cancelled" />
+            </util:map>
+        </property>
+    </bean>
+    -->
+
+    <bean id="CL_DEPARTMENT" class="io.github.yoshikawaa.sample.domain.codelist.PropertiesReloadableCodeList">
+        <property name="location" value="file:C:/dev/codelist.properties" />
+        <!-- You can find the source file from src/main/resources/META-INF/codelist.properties . -->
+    </bean>
+    <task:scheduler id="taskScheduler" />
+    <task:scheduled-tasks scheduler="taskScheduler">
+        <task:scheduled ref="CL_DEPARTMENT" method="refresh" cron="*/10 * * * * *"/>
+    </task:scheduled-tasks>
+
+</beans>
