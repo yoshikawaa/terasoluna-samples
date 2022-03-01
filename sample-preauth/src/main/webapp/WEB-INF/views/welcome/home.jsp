@@ -7,8 +7,12 @@
 </head>
 <body>
     <div id="wrapper">
-        <h1>Hello world!</h1>
+        <h1>Hello <sec:authentication property="principal.account.firstName"/>!</h1>
         <p>The time on the server is ${serverTime}.</p>
+        <form method="post" action="logout">
+            <sec:csrfInput />
+            <button>Logout</button>
+        </form>
     </div>
 </body>
 </html>

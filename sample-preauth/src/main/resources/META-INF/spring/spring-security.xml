@@ -8,15 +8,37 @@
     ">
 
     <sec:http pattern="/resources/**" security="none"/>
-    <sec:http>
-        <sec:form-login/>
-        <sec:logout/>
+    <sec:http pattern="/nonauth/**" security="none"/>
+    <sec:http entry-point-ref="forbiddenEntryPoint">
+        <!-- <sec:form-login/> -->
+        <sec:logout logout-success-url="/nonauth" />
         <sec:access-denied-handler ref="accessDeniedHandler"/>
         <sec:custom-filter ref="userIdMDCPutFilter" after="ANONYMOUS_FILTER"/>
         <sec:session-management />
+
+        <sec:custom-filter position="PRE_AUTH_FILTER" ref="cookieAuthFilter" />
+        <sec:intercept-url pattern="/**" access="isAuthenticated()" />
     </sec:http>
 
-    <sec:authentication-manager />
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider ref="preAuthProvider" />
+    </sec:authentication-manager>
+
+    <bean id="cookieAuthFilter" class="io.github.yoshikawaa.sample.security.web.authentication.preauth.CookieAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="checkForPrincipalChanges" value="true" />
+        <property name="invalidateSessionOnPrincipalChange" value="true" />
+        <property name="cookieName" value="id" />
+    </bean>
+    <bean id="preAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <property name="throwExceptionWhenTokenRejected" value="true" />
+        <property name="preAuthenticatedUserDetailsService">
+            <bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+                <property name="userDetailsService" ref="accountUserDetailsService" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="forbiddenEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 
     <!-- CSRF Protection -->
     <bean id="accessDeniedHandler"
